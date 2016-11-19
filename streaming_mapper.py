@@ -5,9 +5,9 @@ import json
 import unicodedata
 import re, string
 import csv
-import googlemaps
+from geopy.geocoders import Nominatim
 
-gmaps = googlemaps.Client(key='AIzaSyAcyQmdMb6gQB3ZfC70d9LFUWC1wBNDTHY')
+gmaps = Nominatim()
 
 def elimina_tildes(cadena):
     s = ''.join((c for c in unicodedata.normalize('NFD',unicode(cadena)) if unicodedata.category(c) != 'Mn'))
@@ -42,8 +42,8 @@ for line in sys.stdin:
             lon = str(coords["coordinates"][0])
             lat = str(coords["coordinates"][1])
             try:
-                reverse_geocode = gmaps.reverse_geocode((lat, lon),language='es',result_type='postal_code')
-                cp = reverse_geocode[0]["address_components"][0]["short_name"]
+                location = gmaps.reverse((lat, lon))
+                cp = location.raw["address"]["postcode"]
             except IndexError:
                 pass
             words = line.split()
