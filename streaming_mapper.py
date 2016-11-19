@@ -1,5 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
+import urllib
 import sys
 import json
 import unicodedata
@@ -9,6 +10,8 @@ from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 
 gmaps = Nominatim(timeout=1)
+opener = urllib.URLopener()
+csvFile = opener.open('https://s3-eu-west-1.amazonaws.com/urjc.datascience.jcano/tweets/Redondo_words_comas.csv')
 
 def elimina_tildes(cadena):
     s = ''.join((c for c in unicodedata.normalize('NFD',unicode(cadena)) if unicodedata.category(c) != 'Mn'))
@@ -22,7 +25,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 sentimientos = {}
-palabras = csv.DictReader(open('Redondo_words_comas.csv'),fieldnames=['key','value'])
+palabras = csv.DictReader(csvFile,fieldnames=['key','value'])
 for p in palabras:
     p['key'] = elimina_tildes(p['key'])
     sentimientos[p['key']] = p['value']
