@@ -10,8 +10,8 @@ for line in sys.stdin:
    # Get the key and value from the current line
    word, count = line.split('\t')
 
-   # Convert the count to an int
-   count = int(count)
+   # Convert the count to an float
+   count = float(count)
 
    # If the current word is the same as the previous word, increment its
    # count, otherwise print the words count to STDOUT

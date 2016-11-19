@@ -4,6 +4,7 @@ import sys
 import json
 import unicodedata
 import re, string
+import csv
 
 
 def elimina_tildes(cadena):
@@ -16,6 +17,12 @@ def solo_letras ( text ):
 
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+sentimientos = {}
+palabras = csv.DictReader(open('Redondo_words_comas.csv'),fieldnames=['key','value'])
+for p in palabras:
+    p['key'] = elimina_tildes(p['key'])
+    sentimientos[p['key']] = p['value']
 
 # Read each line from STDIN
 for line in sys.stdin:
@@ -33,7 +40,8 @@ for line in sys.stdin:
         for word in words:  
             word = elimina_tildes(word)  
             word = solo_letras(word)
+            if sentimientos.has_key(word):
             # Write the key-value pair to STDOUT to be processed by the reducer.
             # The key is anything before the first tab character and the value is
             # anything after the first tab character.
-            print '{0}\t{1}'.format(word, 1)
+                print '{0}\t{1}'.format(word, sentimientos[word])
