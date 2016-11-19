@@ -25,6 +25,7 @@ for p in palabras:
     sentimientos[p['key']] = p['value']
 
 # Read each line from STDIN
+t = 0
 for line in sys.stdin:
     try:
         record = json.loads(line,encoding='latin-1')
@@ -36,12 +37,15 @@ for line in sys.stdin:
         line = line.encode('utf8')
         words = line.split()
 
-        # Generate the count for each word
+        t = t+1
+        valoracion = 0
         for word in words:  
             word = elimina_tildes(word)  
             word = solo_letras(word)
             if sentimientos.has_key(word):
+                valoracion = valoracion+float(sentimientos[word])
             # Write the key-value pair to STDOUT to be processed by the reducer.
             # The key is anything before the first tab character and the value is
             # anything after the first tab character.
-                print '{0}\t{1}'.format(word, sentimientos[word])
+                
+        print '{0}\t{1}'.format(t, valoracion)
