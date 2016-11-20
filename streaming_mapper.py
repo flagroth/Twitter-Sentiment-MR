@@ -1,15 +1,15 @@
 #!/usr/bin/env python
-
 import urllib
+import urllib2
 import sys
 import json
 import unicodedata
 import re, string
 import csv
-from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
+#from geopy.geocoders import Nominatim
+#from geopy.exc import GeocoderTimedOut
 
-gmaps = Nominatim(timeout=1)
+#gmaps = Nominatim(timeout=1)
 opener = urllib.URLopener()
 csvFile = opener.open('https://s3-eu-west-1.amazonaws.com/urjc.datascience.jcano/tweets/Redondo_words_comas.csv')
 
@@ -45,12 +45,20 @@ for line in sys.stdin:
         if coords is not None:
             lon = str(coords["coordinates"][0])
             lat = str(coords["coordinates"][1])
+            url = 'http://photon.komoot.de/reverse'
+            values = {'lon' : lon, 'lat' : lat}
+            data = urllib.urlencode(values)
+            full_url = url + '?' + data
+            response = urllib2.urlopen(full_url)
+            location_raw = response.read()
+            location = json.loads(location_raw)
+            #print location['features'][0]['properties']['postcode']
+            #try:
+            #    location = gmaps.reverse((lat, lon),timeout=1)
+            #except GeocoderTimedOut as e:
+            #    print "Error: geocode failed on input %s with message %s"%(location, e.msg)
             try:
-                location = gmaps.reverse((lat, lon),timeout=1)
-            except GeocoderTimedOut as e:
-                print "Error: geocode failed on input %s with message %s"%(location, e.msg)
-            try:
-                cp = location.raw["address"]["postcode"]
+                cp = location['features'][0]['properties']['postcode']
             except KeyError:
                 pass
 
