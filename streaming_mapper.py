@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import urllib
 import urllib2
 import sys
 import json
 import unicodedata
-import re, string
+import re
 import csv
 #from geopy.geocoders import Nominatim
 #from geopy.exc import GeocoderTimedOut
@@ -31,7 +31,6 @@ for p in palabras:
     sentimientos[p['key']] = p['value']
 
 # Read each line from STDIN
-t = 0
 for line in sys.stdin:
     line = line.encode('utf8')
     try:
@@ -45,14 +44,14 @@ for line in sys.stdin:
         if coords is not None:
             lon = str(coords["coordinates"][0])
             lat = str(coords["coordinates"][1])
-            url = 'http://photon.komoot.de/reverse'
+            #url = 'http://photon.komoot.de/reverse'
+            url = 'http://54.154.150.47:2322/reverse'
             values = {'lon' : lon, 'lat' : lat}
             data = urllib.urlencode(values)
             full_url = url + '?' + data
             response = urllib2.urlopen(full_url)
             location_raw = response.read()
             location = json.loads(location_raw)
-            #print location['features'][0]['properties']['postcode']
             #try:
             #    location = gmaps.reverse((lat, lon),timeout=1)
             #except GeocoderTimedOut as e:
@@ -60,7 +59,7 @@ for line in sys.stdin:
             try:
                 cp = location['features'][0]['properties']['postcode']
             except KeyError:
-                pass
+                continue
 
             words = line.split()
 
