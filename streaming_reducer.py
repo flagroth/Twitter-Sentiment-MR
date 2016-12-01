@@ -11,6 +11,7 @@ for line in sys.stdin:
     # Get the key and value from the current line
     try:
         zipcode, count = line.split('\t')
+        zipcode = zipcode[:2]
     except ValueError:
         print 'ValueError'
     

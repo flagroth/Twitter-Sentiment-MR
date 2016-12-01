@@ -52,10 +52,6 @@ for line in sys.stdin:
             response = urllib2.urlopen(full_url)
             location_raw = response.read()
             location = json.loads(location_raw)
-            #try:
-            #    location = gmaps.reverse((lat, lon),timeout=1)
-            #except GeocoderTimedOut as e:
-            #    print "Error: geocode failed on input %s with message %s"%(location, e.msg)
             try:
                 cp = location['features'][0]['properties']['postcode']
             except KeyError:
@@ -69,9 +65,9 @@ for line in sys.stdin:
                 word = solo_letras(word)
                 if sentimientos.has_key(word):
                     valoracion = valoracion+float(sentimientos[word])
-                # Write the key-value pair to STDOUT to be processed by the reducer.
-                # The key is anything before the first tab character and the value is
-                # anything after the first tab character.
 
+            # Write the key-value pair to STDOUT to be processed by the reducer.
+            # The key is anything before the first tab character and the value is
+            # anything after the first tab character.
             print '{0}\t{1}'.format(cp,valoracion)
                 
