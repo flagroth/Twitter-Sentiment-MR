@@ -12,6 +12,8 @@ import csv
 #gmaps = Nominatim(timeout=1)
 opener = urllib.URLopener()
 csvFile = opener.open('https://s3-eu-west-1.amazonaws.com/urjc.datascience.jcano/tweets/Redondo_words_comas.csv')
+palabras = csv.DictReader(csvFile,fieldnames=['key','value'])
+url = 'http://54.154.150.47:2322/reverse'
 
 def elimina_tildes(cadena):
     s = ''.join((c for c in unicodedata.normalize('NFD',unicode(cadena)) if unicodedata.category(c) != 'Mn'))
@@ -24,8 +26,8 @@ def solo_letras ( text ):
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+
 sentimientos = {}
-palabras = csv.DictReader(csvFile,fieldnames=['key','value'])
 for p in palabras:
     p['key'] = elimina_tildes(p['key'])
     sentimientos[p['key']] = p['value']
@@ -44,8 +46,6 @@ for line in sys.stdin:
         if coords is not None:
             lon = str(coords["coordinates"][0])
             lat = str(coords["coordinates"][1])
-            #url = 'http://photon.komoot.de/reverse'
-            url = 'http://54.154.150.47:2322/reverse'
             values = {'lon' : lon, 'lat' : lat}
             data = urllib.urlencode(values)
             full_url = url + '?' + data
