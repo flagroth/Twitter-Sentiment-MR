@@ -1,9 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 import sys
 import urllib
 import csv
-import seaborn as sns
-import pandas as pd
+#import seaborn as sns
+#import pandas as pd
 
 curr_zipcode = None
 curr_count = 0
@@ -45,8 +45,8 @@ if curr_zipcode == zipcode:
     print '{0}\t{1}'.format(curr_zipcode, curr_count)
 
 
-sents=pd.DataFrame.from_dict(cps, orient="index")
+#sents=pd.DataFrame.from_dict(cps, orient="index")
 #for x in cps:
 #    print(x, float(cps[x]))
 
-sents.plot(kind='bar').get_figure().savefig("plot.png")
+#sents.plot(kind='bar').get_figure().savefig("plot.png")

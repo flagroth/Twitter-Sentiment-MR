@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 import urllib
 import urllib2
 import sys
@@ -13,7 +13,7 @@ import csv
 opener = urllib.URLopener()
 csvFile = opener.open('https://s3-eu-west-1.amazonaws.com/urjc.datascience.jcano/tweets/Redondo_words_comas.csv')
 palabras = csv.DictReader(csvFile,fieldnames=['key','value'])
-url = 'http://54.154.150.47:2322/reverse'
+url = 'http://54.171.111.87:2322/reverse'
 
 def elimina_tildes(cadena):
     s = ''.join((c for c in unicodedata.normalize('NFD',unicode(cadena)) if unicodedata.category(c) != 'Mn'))
